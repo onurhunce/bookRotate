@@ -1,0 +1,15 @@
+/*.egg-info/
+/dist/
+/.cache/
+/static/*
+/media/*
+*.mo
+*.pyc
+*.coverage
+*.sqlite3*
+__pycache__
+celerybeat-schedule
+.sass-cache
+.idea/
+src/
+.pytest_cache/
