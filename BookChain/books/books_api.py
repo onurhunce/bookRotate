@@ -10,7 +10,7 @@ from google.cloud.vision import types
 
 GOOGLE_BOOKS_API_URL = "https://www.googleapis.com/books/v1/volumes"
 GOOGLE_VISION_API_URL = "https://vision.googleapis.com/v1/images:annotate"
-GOOGLE_BOOKS_API_KEY = "AIzaSyAH0nf4CK1Hsy0XY8Qs26AAk8DUWZXUb8k"
+GOOGLE_BOOKS_API_KEY = ""
 
 
 def get_book(query_value, query_type):
