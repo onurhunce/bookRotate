@@ -18,7 +18,7 @@ def get_book(query_value, query_type):
     url = f"{GOOGLE_BOOKS_API_URL}{query}"  # noqa
     response = requests.get(url)
     list_of_items = response.json()["items"]
-    get_book_name_from_dict(list_of_items)
+    return get_book_name_from_dict(list_of_items)
 
 
 def get_correct_query(query_type, query_value):
@@ -31,9 +31,32 @@ def get_correct_query(query_type, query_value):
 
 
 def get_book_name_from_dict(list_of_items):
+    names = []
     for item in list_of_items:
-        print(item.get("volumeInfo"))
-        print("\n\n\n")
+        title = ''
+        authors = ''
+        categories = ''
+        published_date = ''
+        link = ''
+        if item.get("volumeInfo"):
+            title = item["volumeInfo"].get("title")
+            authors_list = item["volumeInfo"].get("authors")
+            if authors_list:
+                authors = ','.join(authors_list)
+            categories_list = item["volumeInfo"].get("categories")
+            if categories_list:
+                categories = ','.join(categories_list)
+            link = item["volumeInfo"].get("previewLink")
+            published_date = item["volumeInfo"].get("publishedDate")
+            book_dict = {
+                'title': title,
+                'authors': authors,
+                'categories': categories,
+                'link': link,
+                'published_date': published_date,
+            }
+            names.append(book_dict)
+    return names
 
 
 def post_image_to_vision_api():
