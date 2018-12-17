@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+		<title>hello</title>
+</head>
+<body>
+
+<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+			<br>
+			<br>
+			<h4>List of filtered books</h4>
+			<br>
+			<br>
+			<div class="table-responsive">
+				<table id="mytable" class="table table-bordred table-striped">
+					<thead>
+						<th></th>
+						<th>Title</th>
+						<th>Authors</th>
+						<th>Categories</th>
+						<th>Published Year</th>
+					</thead>
+					<tbody>
+						{% for book_result in results %}
+							<tr>
+							<td><input type="checkbox" class="checkthis" /></td>
+							<td>{{book_result.title}}</td>
+							<td>{{book_result.authors}}</td>
+							<td>{{book_result.categories}}</td>
+							<td>{{book_result.published_date}}</td>
+							<td>
+								<a type="button" class="btn btn-primary" href="{{book_result.link}}" style="color: white">Visit the book</a>
+							</td>
+							<td>
+								<button class="btn btn-success">Add to my library</button>
+							</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
