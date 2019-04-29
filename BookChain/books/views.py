@@ -14,13 +14,13 @@ def success(request):
     return render(request, 'books/feedback.html', context)
 
 
-@login_required
+# @login_required
 def user_profile(request):
     context = {'user_name': request.user}
     return render(request, 'books/user_profile.html', context)
 
 
-@login_required
+#@login_required
 def search_book(request):
     if request.method == 'POST':
         form = BookSearchForm(request.POST)

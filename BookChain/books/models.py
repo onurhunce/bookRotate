@@ -7,34 +7,49 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    languages = models.TextField(max_length=500, blank=True)
 
 
-class Books(models.Model):
-    name = models.TextField(max_length=500, blank=False)
+class ProfileSettings(models.Model):
+    preferred_languages = models.TextField(max_length=500, blank=True)
+
+
+class Book(models.Model):
+    id = models.IntegerField(primary_key = True)
+    title = models.TextField(max_length=500, blank=False)
+    isbn = models.TextField(max_length=500, blank=False)
+    publisher = models.TextField(max_length=500, blank=False)
     categories = models.TextField(max_length=500, blank=False)
     author = models.TextField(max_length=200, blank=False)
     language = models.TextField(max_length=30, blank=False)
     genre = models.TextField(max_length=200, blank=False)
     year = models.DateTimeField(auto_now_add=True)
+    image_url = models.URLField()
 
 
-class Relations(models.Model):
-    user_one = models.ForeignKey(
+class Review(models.Model):
+    reviewer = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reviewer"
+    )
+    reviewee = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="reviewee"
+    )
+
+    review_content = models.TextField(max_length=500, blank=False)
+
+
+class Friend(models.Model):
+    user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="relations_user_1"
     )
-    user_two = models.ForeignKey(
+    friend = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="relations_user_2"
     )
-    action = models.TextField(max_length=20, blank=False)
-    relation_status = models.TextField(max_length=20, blank=False)
-    action_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Library(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # owned_book = models.For(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Books, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     # shelf = models.ForeignKey(Shelves, on_delete=models.CASCADE)
 
 
