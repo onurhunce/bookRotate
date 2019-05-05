@@ -2,36 +2,42 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Book(models.Model):
+    id = models.IntegerField(primary_key = True)
+    title = models.CharField(max_length=100, null=True)
+    author = models.CharField(max_length=100, null=True)
+    isbn = models.CharField(max_length=100, null=True)
+    publisher = models.TextField(max_length=100, blank=False)
+    categories = models.TextField(max_length=500, blank=False)
+    language = models.TextField(max_length=30, blank=False)
+    genre = models.TextField(max_length=200, blank=False)
+    pub_year = models.DateTimeField(blank=True, null=True)
+    image_url = models.URLField(blank=True, null=True)
+
+
+class Library(models.Model):
+    id = models.IntegerField(primary_key = True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
+    library = models.ForeignKey(Library, on_delete=models.CASCADE, default="", related_name="library_user")
 
 
 class ProfileSettings(models.Model):
     preferred_languages = models.TextField(max_length=500, blank=True)
 
 
-class Book(models.Model):
-    id = models.IntegerField(primary_key = True)
-    title = models.TextField(max_length=500, blank=False)
-    isbn = models.TextField(max_length=500, blank=False)
-    publisher = models.TextField(max_length=500, blank=False)
-    categories = models.TextField(max_length=500, blank=False)
-    author = models.TextField(max_length=200, blank=False)
-    language = models.TextField(max_length=30, blank=False)
-    genre = models.TextField(max_length=200, blank=False)
-    year = models.DateTimeField(auto_now_add=True)
-    image_url = models.URLField()
-
-
 class Review(models.Model):
     reviewer = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="reviewer"
     )
-    reviewee = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="reviewee"
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="review_user"
     )
 
     review_content = models.TextField(max_length=500, blank=False)
@@ -44,13 +50,6 @@ class Friend(models.Model):
     friend = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="relations_user_2"
     )
-
-
-class Library(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # owned_book = models.For(User, on_delete=models.CASCADE)
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    # shelf = models.ForeignKey(Shelves, on_delete=models.CASCADE)
 
 
 class SwapStatuses(models.Model):

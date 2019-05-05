@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
 from .books_api import get_book
-from .forms import BookSearchForm
+from .forms import BookSearchForm, BookForm
 
 
 def index(request):
@@ -35,8 +35,10 @@ def search_book(request):
                 results = get_book(query_value=title_value, query_type='title')
             if author_value:
                 results = get_book(query_value=author_value, query_type='author')
+
+            form = BookForm(results)
             return render(
-                request, 'books/feedback.html', {'results': results}
+                request, 'books/feedback.html', {'form': form}
             )
     else:
         form = BookSearchForm()
