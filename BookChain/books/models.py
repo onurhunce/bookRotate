@@ -15,17 +15,31 @@ class Book(models.Model):
     image_url = models.URLField(blank=True, null=True)
 
 
-class Library(models.Model):
+class Bookshelf(models.Model):
     id = models.IntegerField(primary_key = True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    book_status = models.TextField(max_length=20, blank=False)
+    """
+    Here we will have:
+    1 -> request_sent
+    2 -> request_accepted
+    3 -> request_denied
+    4 -> books_returned
+    """
+    current_owner = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="current_reader"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+    ff = models.DateTimeField(auto_now_add=True)
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(max_length=500, blank=True)
+    biography = models.TextField(max_length=520, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
-    library = models.ForeignKey(Library, on_delete=models.CASCADE, default="", related_name="library_user")
+    bookshelf = models.ForeignKey(Bookshelf, on_delete=models.CASCADE, default="", related_name="library")
 
 
 class ProfileSettings(models.Model):
@@ -37,7 +51,7 @@ class Review(models.Model):
         User, on_delete=models.CASCADE, related_name="reviewer"
     )
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="review_user"
+        User, on_delete=models.CASCADE, related_name="reviewee"
     )
 
     review_content = models.TextField(max_length=500, blank=False)
@@ -49,38 +63,4 @@ class Friend(models.Model):
     )
     friend = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="relations_user_2"
-    )
-
-
-class SwapStatuses(models.Model):
-    status = models.TextField(max_length=20, blank=False)
-    """
-    Here we will have:
-    1 -> request_sent
-    2 -> request_accepted
-    3 -> request_denied
-    4 -> books_swapped
-    5 -> books_returned
-    6 -> request_removed
-    """
-
-
-class Swaps(models.Model):
-    user_1 = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="swap_user_1"
-    )
-    user_2 = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="swap_user_2"
-    )
-    book_1 = models.ForeignKey(
-        Library, on_delete=models.CASCADE, related_name="swap_book_1"
-    )
-    book_2 = models.ForeignKey(
-        Library, on_delete=models.CASCADE, related_name="swap_book_2"
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)
-    status = models.ForeignKey(SwapStatuses, on_delete=models.CASCADE)
-    last_action_user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="last_action_user"
     )

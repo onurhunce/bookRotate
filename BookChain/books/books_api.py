@@ -13,8 +13,7 @@ GOOGLE_VISION_API_URL = "https://vision.googleapis.com/v1/images:annotate"
 GOOGLE_BOOKS_API_KEY = ""
 
 
-def get_book(query_value, query_type):
-    query = get_correct_query(query_type, query_value)
+def get_book(query):
     url = f"{GOOGLE_BOOKS_API_URL}{query}"  # noqa
     response = requests.get(url)
     list_of_items = response.json()["items"]
@@ -23,11 +22,11 @@ def get_book(query_value, query_type):
 
 def get_correct_query(query_type, query_value):
     if query_type == "isbn":
-        return f"?q=isbn:{query_value}&printType=books"  # noqa
+        return f"isbn:{query_value}"  # noqa
     if query_type == "author":
-        return f"?q=inauthor:{query_value}&printType=books"  # noqa
+        return f"inauthor:{query_value}"  # noqa
     if query_type == "title":
-        return f"?q=intitle:{query_value}&printType=books"  # noqa
+        return f"intitle:{query_value}"  # noqa
 
 
 def get_book_name_from_dict(list_of_items):
