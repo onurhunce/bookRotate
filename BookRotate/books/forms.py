@@ -15,9 +15,9 @@ class BookForm(forms.ModelForm):
         fields = ['title', 
                   'author', 
                   'isbn',
-                   'publisher',
-                   'categories',
-                   'language',
-                   'genre',
-                   'pub_year',
-                   'image_url']
+                  'publisher',
+                  'categories',
+                  'language',
+                  'genre',
+                  'pub_year',
+                  'image_url']

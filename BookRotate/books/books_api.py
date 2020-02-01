@@ -62,7 +62,7 @@ def post_image_to_vision_api():
     url = f"{GOOGLE_VISION_API_URL}?key={GOOGLE_BOOKS_API_KEY}"  # noqa
     print("url is::: ", url)
     image = open(
-        '/home/onur/Works/BookChain/bookchain/scripts/image.jpg', 'rb'
+        '/home/onur/Works/BookRotate/BookRotate/scripts/image.jpg', 'rb'
     )
     b64_string = base64.b64encode(image.read())
     request_data = {
@@ -94,11 +94,11 @@ def use_vision_client():
     client = vision.ImageAnnotatorClient()
     print("client is:: ", client)
     image_file = open(
-        '/home/onur/Works/BookChain/bookchain/scripts/image.jpg', 'rb'
+        '/home/onur/Works/BookRotate/BookRotate/scripts/image.jpg', 'rb'
     )
     # Loads the image into memory
     with io.open(
-        '/home/onur/Works/BookChain/bookchain/scripts/image.jpg', 'rb'
+        '/home/onur/Works/BookRotate/BookRotate/scripts/image.jpg', 'rb'
     ) as image_file:
         content = image_file.read()
 
