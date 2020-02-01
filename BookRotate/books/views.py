@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
-from .books_api import get_book
-from .forms import BookSearchForm
+from .books_api import get_book, get_correct_query
+from .forms import BookSearchForm, BookForm
 
 
 def index(request):
@@ -26,15 +26,27 @@ def search_book(request):
         form = BookSearchForm(request.POST)
         if form.is_valid():
             results = []
+            res=[]
+            part = ''
+
             isbn_value = form.cleaned_data.get('isbn')
             title_value = form.cleaned_data.get('title')
             author_value = form.cleaned_data.get('author')
+
             if isbn_value:
-                results = get_book(query_value=isbn_value, query_type='isbn')
+                part = get_correct_query(query_type='isbn', query_value=isbn_value)
+                res.append(part)
             if title_value:
-                results = get_book(query_value=title_value, query_type='title')
+                part = get_correct_query(query_type='title', query_value=title_value)
+                res.append(part)
             if author_value:
-                results = get_book(query_value=author_value, query_type='author')
+                part = get_correct_query(query_type='author', query_value=author_value)
+                res.append(part)
+
+            que=','.join(res)
+            query = f"?q={que}&printType=books"
+            results=get_book(query=query)
+
             return render(
                 request, 'books/feedback.html', {'results': results}
             )
